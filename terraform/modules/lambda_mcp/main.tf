@@ -32,6 +32,14 @@ resource "aws_ecr_lifecycle_policy" "lambda_mcp" {
   })
 }
 
+# Get ECR image digest to detect image updates
+data "aws_ecr_image" "lambda_mcp" {
+  repository_name = aws_ecr_repository.lambda_mcp.name
+  image_tag       = var.image_tag
+
+  depends_on = [aws_ecr_repository.lambda_mcp]
+}
+
 # Lambda Function
 resource "aws_lambda_function" "mcp_server" {
   function_name = var.function_name
@@ -40,15 +48,10 @@ resource "aws_lambda_function" "mcp_server" {
   image_uri     = "${aws_ecr_repository.lambda_mcp.repository_url}:${var.image_tag}"
   timeout       = var.timeout
   memory_size   = var.memory_size
+  architectures = ["arm64"]
 
-  environment {
-    variables = merge(
-      {
-        AWS_DEFAULT_REGION = var.aws_region
-      },
-      var.environment_variables
-    )
-  }
+  # Detect image updates by tracking digest
+  source_code_hash = trimprefix(data.aws_ecr_image.lambda_mcp.id, "sha256:")
 
   tags = var.tags
 
@@ -82,4 +85,3 @@ resource "aws_lambda_permission" "function_url" {
   principal              = "*"
   function_url_auth_type = "NONE"
 }
-

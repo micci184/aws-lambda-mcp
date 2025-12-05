@@ -32,12 +32,6 @@ variable "memory_size" {
   default     = 512
 }
 
-variable "environment_variables" {
-  description = "Additional environment variables for the Lambda function"
-  type        = map(string)
-  default     = {}
-}
-
 variable "cors_allow_origins" {
   description = "List of allowed origins for CORS"
   type        = list(string)
