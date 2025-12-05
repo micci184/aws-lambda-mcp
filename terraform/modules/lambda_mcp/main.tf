@@ -53,6 +53,12 @@ resource "aws_lambda_function" "mcp_server" {
   # Detect image updates by tracking digest
   source_code_hash = trimprefix(data.aws_ecr_image.lambda_mcp.id, "sha256:")
 
+  environment {
+    variables = {
+      HOME = "/tmp"
+    }
+  }
+
   tags = var.tags
 
   depends_on = [

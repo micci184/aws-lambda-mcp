@@ -25,13 +25,13 @@ variable "image_tag" {
 variable "timeout" {
   description = "Lambda function timeout in seconds"
   type        = number
-  default     = 300
+  default     = 900
 }
 
 variable "memory_size" {
   description = "Lambda function memory size in MB"
   type        = number
-  default     = 512
+  default     = 1024
 }
 
 variable "tags" {

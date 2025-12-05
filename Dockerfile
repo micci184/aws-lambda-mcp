@@ -11,7 +11,9 @@ RUN dnf install -y unzip && dnf clean all && \
     rm -rf awscliv2.zip aws
 
 # Install mcp-lambda and mcp packages
-RUN pip install --no-cache-dir "run-mcp-servers-with-aws-lambda==${MCP_LAMBDA_VERSION}"
+RUN pip install --no-cache-dir \
+    "run-mcp-servers-with-aws-lambda==${MCP_LAMBDA_VERSION}" \
+    "awslabs.aws-api-mcp-server"
 
 # Copy handler
 COPY handler.py ./handler.py
