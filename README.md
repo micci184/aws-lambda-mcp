@@ -51,6 +51,10 @@ docker push ${ECR_REPO}:latest
 terraform apply
 ```
 
+## Security
+
+> ⚠️ **Warning**: This deployment uses Lambda Function URL with `authorization_type = "NONE"`, meaning the endpoint is publicly accessible. For production use, consider enabling IAM authentication or adding other security measures.
+
 ## MCP Client Config
 
 ```json
